@@ -8,9 +8,9 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Plus, Pencil, Trash2, ChevronDown, ChevronRight, Package } from 'lucide-react'
+import { Badge } from "@/components/ui/badge"
+import { Plus, Pencil, Trash2, Package } from 'lucide-react'
 import Layout from '@/components/Layout'
-import React from 'react'
 
 // Mock data
 const initialProducts = [
@@ -64,7 +64,6 @@ const initialProducts = [
 export default function ProductsPage() {
   const [products, setProducts] = useState(initialProducts)
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
-  const [expandedRows, setExpandedRows] = useState<number[]>([])
   const [newProduct, setNewProduct] = useState({
     name: '',
     hairType: '',
@@ -76,14 +75,6 @@ export default function ProductsPage() {
     minStock: '',
     supplier: ''
   })
-
-  const toggleRow = (id: number) => {
-    setExpandedRows(prev =>
-      prev.includes(id)
-        ? prev.filter(rowId => rowId !== id)
-        : [...prev, id]
-    )
-  }
 
   const handleAddProduct = () => {
     const product = {
@@ -121,10 +112,10 @@ export default function ProductsPage() {
   return (
     <Layout>
       <div className="space-y-8">
-        <div className="flex justify-between items-center">
+        <div className="mobile-header">
           <div>
-            <h1 className="text-4xl font-bold brown-text">Products</h1>
-            <p className="text-amber-700 text-lg">Manage your hair product inventory</p>
+            <h1 className="mobile-title brown-text">Products</h1>
+            <p className="text-amber-700 text-sm sm:text-base">Manage your hair product inventory</p>
           </div>
         </div>
 
@@ -136,49 +127,32 @@ export default function ProductsPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="brown-text">Name</TableHead>
-                    <TableHead className="brown-text">Hair Type</TableHead>
-                    <TableHead className="brown-text">Length</TableHead>
-                    <TableHead className="brown-text">Color</TableHead>
-                    <TableHead className="brown-text">Texture</TableHead>
-                    <TableHead className="brown-text">Price</TableHead>
-                    <TableHead className="brown-text">Stock</TableHead>
-                    <TableHead className="brown-text">Supplier</TableHead>
-                    <TableHead className="brown-text">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {products.map((product) => (
-                    <React.Fragment key={product.id}>
-                      <TableRow className="hover:bg-amber-50">
-                        <TableCell className="font-medium">
-                          <div className="flex items-center gap-2">
-                            {product.variants.length > 0 && (
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => toggleRow(product.id)}
-                                className="p-0 h-auto"
-                              >
-                                {expandedRows.includes(product.id) ? (
-                                  <ChevronDown className="h-4 w-4" />
-                                ) : (
-                                  <ChevronRight className="h-4 w-4" />
-                                )}
-                              </Button>
-                            )}
-                            {product.name}
-                          </div>
-                        </TableCell>
+            {/* Desktop Table View */}
+            <div className="hidden md:block">
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="brown-text">Name</TableHead>
+                      <TableHead className="brown-text">Hair Type</TableHead>
+                      <TableHead className="brown-text">Length</TableHead>
+                      <TableHead className="brown-text">Color</TableHead>
+                      <TableHead className="brown-text">Texture</TableHead>
+                      <TableHead className="brown-text">Price</TableHead>
+                      <TableHead className="brown-text">Stock</TableHead>
+                      <TableHead className="brown-text">Supplier</TableHead>
+                      <TableHead className="brown-text">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {products.map((product) => (
+                      <TableRow key={product.id} className="hover:bg-amber-50">
+                        <TableCell className="font-medium">{product.name}</TableCell>
                         <TableCell>{product.hairType}</TableCell>
                         <TableCell>{product.length}</TableCell>
                         <TableCell>{product.color}</TableCell>
                         <TableCell>{product.texture}</TableCell>
-                        <TableCell className="font-semibold gold-text">BR {product.price}</TableCell>
+                        <TableCell className="font-semibold gold-text">${product.price}</TableCell>
                         <TableCell>
                           <span className={product.stock <= product.minStock ? 'text-red-600 font-semibold' : 'font-medium'}>
                             {product.stock}
@@ -190,9 +164,9 @@ export default function ProductsPage() {
                             <Button variant="outline" size="sm" className="text-amber-600 border-amber-200 hover:bg-amber-50">
                               <Pencil className="h-4 w-4" />
                             </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
                               className="text-red-600 border-red-200 hover:bg-red-50"
                               onClick={() => handleDeleteProduct(product.id)}
                             >
@@ -201,26 +175,87 @@ export default function ProductsPage() {
                           </div>
                         </TableCell>
                       </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
 
-                      {expandedRows.includes(product.id) && product.variants.map((variant, index) => (
-                        <TableRow key={` {product.id}-variant-BR {index} BR`} className="bg-amber-25">
-                          <TableCell className="pl-12 text-sm text-gray-600">
-                            ↳ Variant: {variant.length}
-                          </TableCell>
-                          <TableCell className="text-sm text-gray-500">-</TableCell>
-                          <TableCell className="text-sm font-medium">{variant.length}</TableCell>
-                          <TableCell className="text-sm text-gray-500">-</TableCell>
-                          <TableCell className="text-sm text-gray-500">-</TableCell>
-                          <TableCell className="text-sm text-gray-500">-</TableCell>
-                          <TableCell className="text-sm font-medium">{variant.stock}</TableCell>
-                          <TableCell className="text-sm text-gray-500">-</TableCell>
-                          <TableCell className="text-sm text-gray-500">-</TableCell>
-                        </TableRow>
-                      ))}
-                    </React.Fragment>
-                  ))}
-                </TableBody>
-              </Table>
+            {/* Mobile Card View */}
+            <div className="md:hidden space-y-4">
+              {products.map((product) => (
+                <Card key={product.id} className="shadow-md border-0 hover-lift">
+                  <CardContent className="p-4">
+                    <div className="space-y-3">
+                      {/* Header with name and stock status */}
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold brown-text text-sm leading-tight">{product.name}</h3>
+                          <p className="text-xs text-gray-600 mt-1">{product.texture} • {product.hairType}</p>
+                        </div>
+                        <div className="flex flex-col items-end ml-2">
+                          <span className="text-lg font-bold gold-text">${product.price}</span>
+                          <Badge 
+                            variant={product.stock <= product.minStock ? "destructive" : "secondary"}
+                            className={`text-xs ${product.stock <= product.minStock ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}
+                          >
+                            {product.stock} in stock
+                          </Badge>
+                        </div>
+                      </div>
+
+                      {/* Product details */}
+                      <div className="grid grid-cols-2 gap-2 text-xs">
+                        <div>
+                          <span className="text-gray-500">Length:</span>
+                          <span className="ml-1 font-medium">{product.length}</span>
+                        </div>
+                        <div>
+                          <span className="text-gray-500">Color:</span>
+                          <span className="ml-1 font-medium">{product.color}</span>
+                        </div>
+                      </div>
+
+                      {/* Supplier */}
+                      <div className="text-xs">
+                        <span className="text-gray-500">Supplier:</span>
+                        <span className="ml-1 font-medium">{product.supplier}</span>
+                      </div>
+
+                      {/* Variants (if any) */}
+                      {product.variants.length > 0 && (
+                        <div className="border-t pt-2">
+                          <p className="text-xs text-gray-500 mb-1">Variants:</p>
+                          <div className="flex flex-wrap gap-1">
+                            {product.variants.map((variant, index) => (
+                              <Badge key={index} variant="outline" className="text-xs">
+                                {variant.length}: {variant.stock}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Actions */}
+                      <div className="flex space-x-2 pt-2 border-t">
+                        <Button variant="outline" size="sm" className="flex-1 text-amber-600 border-amber-200 hover:bg-amber-50">
+                          <Pencil className="h-4 w-4 mr-1" />
+                          Edit
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="flex-1 text-red-600 border-red-200 hover:bg-red-50"
+                          onClick={() => handleDeleteProduct(product.id)}
+                        >
+                          <Trash2 className="h-4 w-4 mr-1" />
+                          Delete
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </CardContent>
         </Card>
@@ -245,13 +280,13 @@ export default function ProductsPage() {
                 <Input
                   id="name"
                   value={newProduct.name}
-                  onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+                  onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
                   className="col-span-3"
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="hairType" className="text-right brown-text">Hair Type</Label>
-                <Select onValueChange={(value) => setNewProduct({ ...newProduct, hairType: value })}>
+                <Select onValueChange={(value) => setNewProduct({...newProduct, hairType: value})}>
                   <SelectTrigger className="col-span-3">
                     <SelectValue placeholder="Select hair type" />
                   </SelectTrigger>
@@ -268,7 +303,7 @@ export default function ProductsPage() {
                 <Input
                   id="length"
                   value={newProduct.length}
-                  onChange={(e) => setNewProduct({ ...newProduct, length: e.target.value })}
+                  onChange={(e) => setNewProduct({...newProduct, length: e.target.value})}
                   className="col-span-3"
                   placeholder="e.g., 16 inch"
                 />
@@ -278,7 +313,7 @@ export default function ProductsPage() {
                 <Input
                   id="color"
                   value={newProduct.color}
-                  onChange={(e) => setNewProduct({ ...newProduct, color: e.target.value })}
+                  onChange={(e) => setNewProduct({...newProduct, color: e.target.value})}
                   className="col-span-3"
                 />
               </div>
@@ -287,7 +322,7 @@ export default function ProductsPage() {
                 <Input
                   id="texture"
                   value={newProduct.texture}
-                  onChange={(e) => setNewProduct({ ...newProduct, texture: e.target.value })}
+                  onChange={(e) => setNewProduct({...newProduct, texture: e.target.value})}
                   className="col-span-3"
                 />
               </div>
@@ -297,7 +332,7 @@ export default function ProductsPage() {
                   id="price"
                   type="number"
                   value={newProduct.price}
-                  onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
+                  onChange={(e) => setNewProduct({...newProduct, price: e.target.value})}
                   className="col-span-3"
                 />
               </div>
@@ -307,7 +342,7 @@ export default function ProductsPage() {
                   id="stock"
                   type="number"
                   value={newProduct.stock}
-                  onChange={(e) => setNewProduct({ ...newProduct, stock: e.target.value })}
+                  onChange={(e) => setNewProduct({...newProduct, stock: e.target.value})}
                   className="col-span-3"
                 />
               </div>
@@ -317,7 +352,7 @@ export default function ProductsPage() {
                   id="minStock"
                   type="number"
                   value={newProduct.minStock}
-                  onChange={(e) => setNewProduct({ ...newProduct, minStock: e.target.value })}
+                  onChange={(e) => setNewProduct({...newProduct, minStock: e.target.value})}
                   className="col-span-3"
                 />
               </div>
@@ -326,14 +361,14 @@ export default function ProductsPage() {
                 <Input
                   id="supplier"
                   value={newProduct.supplier}
-                  onChange={(e) => setNewProduct({ ...newProduct, supplier: e.target.value })}
+                  onChange={(e) => setNewProduct({...newProduct, supplier: e.target.value})}
                   className="col-span-3"
                 />
               </div>
             </div>
             <DialogFooter>
-              <Button
-                type="submit"
+              <Button 
+                type="submit" 
                 onClick={handleAddProduct}
                 className="gold-gradient hover:opacity-90 text-white"
               >

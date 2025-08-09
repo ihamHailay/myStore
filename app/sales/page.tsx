@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
-import { Plus, ShoppingCart, Scan, Percent } from 'lucide-react'
+import { Plus, ShoppingCart, Scan, Percent, Eye, Printer } from 'lucide-react'
 import Layout from '@/components/Layout'
 
 // Mock data
@@ -85,14 +85,14 @@ export default function SalesPage() {
   return (
     <Layout>
       <div className="space-y-8">
-        <div className="flex justify-between items-center">
+        <div className="mobile-header">
           <div>
-            <h1 className="text-4xl font-bold brown-text">Sales</h1>
-            <p className="text-amber-700 text-lg">Track and manage your sales transactions</p>
+            <h1 className="mobile-title brown-text">Sales</h1>
+            <p className="text-amber-700 text-sm sm:text-base">Track and manage your sales transactions</p>
           </div>
           <Dialog open={isNewSaleModalOpen} onOpenChange={setIsNewSaleModalOpen}>
             <DialogTrigger asChild>
-              <Button className="gold-gradient hover:opacity-90 text-white shadow-lg">
+              <Button className="mobile-button gold-gradient hover:opacity-90 text-white shadow-lg">
                 <Plus className="h-4 w-4 mr-2" />
                 New Sale
               </Button>
@@ -114,7 +114,7 @@ export default function SalesPage() {
                     <SelectContent>
                       {products.map((product) => (
                         <SelectItem key={product.id} value={product.name}>
-                          {product.name} - {product.price} Br
+                          {product.name} - ${product.price}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -169,7 +169,7 @@ export default function SalesPage() {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="percentage">%</SelectItem>
-                          <SelectItem value="fixed">BR</SelectItem>
+                          <SelectItem value="fixed">$</SelectItem>
                         </SelectContent>
                       </Select>
                       <Input
@@ -197,17 +197,17 @@ export default function SalesPage() {
                   <div className="border-t pt-4 space-y-2">
                     <div className="flex justify-between text-sm">
                       <span>Subtotal:</span>
-                      <span>{subtotal} BR</span>
+                      <span>${subtotal}</span>
                     </div>
                     {discountAmount > 0 && (
                       <div className="flex justify-between text-sm text-red-600">
                         <span>Discount:</span>
-                        <span>-{discountAmount.toFixed(2)} Br</span>
+                        <span>-${discountAmount.toFixed(2)}</span>
                       </div>
                     )}
                     <div className="flex justify-between text-lg font-semibold gold-text border-t pt-2">
                       <span>Total:</span>
-                      <span>{totalPrice.toFixed(2)} Br</span>
+                      <span>${totalPrice.toFixed(2)}</span>
                     </div>
                   </div>
                 )}
@@ -234,45 +234,98 @@ export default function SalesPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="brown-text">Date</TableHead>
-                    <TableHead className="brown-text">Customer</TableHead>
-                    <TableHead className="brown-text">Product</TableHead>
-                    <TableHead className="brown-text">Quantity</TableHead>
-                    <TableHead className="brown-text">Discount</TableHead>
-                    <TableHead className="brown-text">Total Price</TableHead>
-                    <TableHead className="brown-text">Payment Method</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {sales.map((sale) => (
-                    <TableRow key={sale.id} className="hover:bg-amber-50">
-                      <TableCell>{sale.date}</TableCell>
-                      <TableCell className="font-medium">{sale.customer}</TableCell>
-                      <TableCell>{sale.product}</TableCell>
-                      <TableCell className="text-center">{sale.quantity}</TableCell>
-                      <TableCell>
-                        {sale.discount > 0 ? (
-                          <Badge variant="secondary" className="bg-red-100 text-red-800">
-                            -{sale.discount.toFixed(2)} BR
-                          </Badge>
-                        ) : (
-                          <span className="text-gray-400">-</span>
-                        )}
-                      </TableCell>
-                      <TableCell className="font-semibold gold-text">{sale.totalPrice}BR</TableCell>
-                      <TableCell>
-                        <Badge variant="outline" className="border-amber-200 text-amber-800">
-                          {sale.paymentMethod}
-                        </Badge>
-                      </TableCell>
+            {/* Desktop Table View */}
+            <div className="hidden md:block">
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="brown-text">Date</TableHead>
+                      <TableHead className="brown-text">Customer</TableHead>
+                      <TableHead className="brown-text">Product</TableHead>
+                      <TableHead className="brown-text">Quantity</TableHead>
+                      <TableHead className="brown-text">Discount</TableHead>
+                      <TableHead className="brown-text">Total Price</TableHead>
+                      <TableHead className="brown-text">Payment Method</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {sales.map((sale) => (
+                      <TableRow key={sale.id} className="hover:bg-amber-50">
+                        <TableCell>{sale.date}</TableCell>
+                        <TableCell className="font-medium">{sale.customer}</TableCell>
+                        <TableCell>{sale.product}</TableCell>
+                        <TableCell className="text-center">{sale.quantity}</TableCell>
+                        <TableCell>
+                          {sale.discount > 0 ? (
+                            <Badge variant="secondary" className="bg-red-100 text-red-800">
+                              -${sale.discount.toFixed(2)}
+                            </Badge>
+                          ) : (
+                            <span className="text-gray-400">-</span>
+                          )}
+                        </TableCell>
+                        <TableCell className="font-semibold gold-text">${sale.totalPrice}</TableCell>
+                        <TableCell>
+                          <Badge variant="outline" className="border-amber-200 text-amber-800">
+                            {sale.paymentMethod}
+                          </Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
+
+            {/* Mobile Card View */}
+            <div className="md:hidden space-y-4">
+              {sales.map((sale) => (
+                <Card key={sale.id} className="shadow-md border-0 hover-lift">
+                  <CardContent className="p-4">
+                    <div className="space-y-3">
+                      {/* Header with customer and total */}
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold brown-text text-sm">{sale.customer}</h3>
+                          <p className="text-xs text-gray-600">{sale.date}</p>
+                        </div>
+                        <div className="text-right ml-2">
+                          <div className="text-lg font-bold gold-text">${sale.totalPrice}</div>
+                          <Badge variant="outline" className="border-amber-200 text-amber-800 text-xs">
+                            {sale.paymentMethod}
+                          </Badge>
+                        </div>
+                      </div>
+
+                      {/* Product details */}
+                      <div className="bg-amber-50 rounded-lg p-3">
+                        <p className="font-medium text-sm brown-text">{sale.product}</p>
+                        <div className="flex items-center justify-between mt-1">
+                          <span className="text-xs text-gray-600">Quantity: {sale.quantity}</span>
+                          {sale.discount > 0 && (
+                            <Badge variant="secondary" className="bg-red-100 text-red-800 text-xs">
+                              -${sale.discount.toFixed(2)}
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Quick actions */}
+                      <div className="flex space-x-2 pt-2 border-t">
+                        <Button variant="outline" size="sm" className="flex-1 text-amber-600 border-amber-200 hover:bg-amber-50">
+                          <Eye className="h-4 w-4 mr-1" />
+                          View Details
+                        </Button>
+                        <Button variant="outline" size="sm" className="flex-1 text-blue-600 border-blue-200 hover:bg-blue-50">
+                          <Printer className="h-4 w-4 mr-1" />
+                          Print Receipt
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </CardContent>
         </Card>
