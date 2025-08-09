@@ -215,7 +215,7 @@ export default function CustomersPage() {
                       <TableRow key={index}>
                         <TableCell>{purchase.date}</TableCell>
                         <TableCell>{purchase.product}</TableCell>
-                        <TableCell className="font-semibold gold-text">${purchase.amount}</TableCell>
+                        <TableCell className="font-semibold gold-text">{purchase.amount} BR</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

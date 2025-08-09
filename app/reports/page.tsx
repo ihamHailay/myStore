@@ -194,9 +194,9 @@ export default function ReportsPage() {
                   {profitMargins.map((item, index) => (
                     <TableRow key={index} className="hover:bg-amber-50">
                       <TableCell className="font-medium">{item.product}</TableCell>
-                      <TableCell className="text-red-600">${item.cost}</TableCell>
-                      <TableCell className="font-semibold">${item.price}</TableCell>
-                      <TableCell className="text-green-600 font-semibold">${item.profit}</TableCell>
+                      <TableCell className="text-red-600">{item.cost} BR</TableCell>
+                      <TableCell className="font-semibold">{item.price} BR</TableCell>
+                      <TableCell className="text-green-600 font-semibold">{item.profit} BR</TableCell>
                       <TableCell>
                         <span className="gold-text font-semibold">{item.margin}</span>
                       </TableCell>
@@ -215,7 +215,7 @@ export default function ReportsPage() {
               <CardTitle className="text-sm font-medium text-blue-900">Total Revenue</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-blue-900">$28,840</div>
+              <div className="text-3xl font-bold text-blue-900">28,840 BR</div>
               <p className="text-xs text-blue-600 flex items-center mt-1">
                 <TrendingUp className="w-3 h-3 mr-1" />
                 +12% from last month
@@ -241,7 +241,7 @@ export default function ReportsPage() {
               <CardTitle className="text-sm font-medium text-green-900">Average Order</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-green-900">$185</div>
+              <div className="text-3xl font-bold text-green-900">185 BR</div>
               <p className="text-xs text-green-600 flex items-center mt-1">
                 <TrendingUp className="w-3 h-3 mr-1" />
                 +3% from last month

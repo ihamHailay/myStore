@@ -152,7 +152,7 @@ export default function ProductsPage() {
                         <TableCell>{product.length}</TableCell>
                         <TableCell>{product.color}</TableCell>
                         <TableCell>{product.texture}</TableCell>
-                        <TableCell className="font-semibold gold-text">${product.price}</TableCell>
+                        <TableCell className="font-semibold gold-text">{product.price} BR</TableCell>
                         <TableCell>
                           <span className={product.stock <= product.minStock ? 'text-red-600 font-semibold' : 'font-medium'}>
                             {product.stock}
@@ -194,7 +194,7 @@ export default function ProductsPage() {
                           <p className="text-xs text-gray-600 mt-1">{product.texture} • {product.hairType}</p>
                         </div>
                         <div className="flex flex-col items-end ml-2">
-                          <span className="text-lg font-bold gold-text">${product.price}</span>
+                          <span className="text-lg font-bold gold-text">{product.price} BR</span>
                           <Badge 
                             variant={product.stock <= product.minStock ? "destructive" : "secondary"}
                             className={`text-xs ${product.stock <= product.minStock ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}

@@ -114,7 +114,7 @@ export default function SalesPage() {
                     <SelectContent>
                       {products.map((product) => (
                         <SelectItem key={product.id} value={product.name}>
-                          {product.name} - ${product.price}
+                          {product.name} - {product.price} BR
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -169,7 +169,7 @@ export default function SalesPage() {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="percentage">%</SelectItem>
-                          <SelectItem value="fixed">$</SelectItem>
+                          <SelectItem value="fixed">BR</SelectItem>
                         </SelectContent>
                       </Select>
                       <Input
@@ -197,17 +197,17 @@ export default function SalesPage() {
                   <div className="border-t pt-4 space-y-2">
                     <div className="flex justify-between text-sm">
                       <span>Subtotal:</span>
-                      <span>${subtotal}</span>
+                      <span>BR{subtotal}</span>
                     </div>
                     {discountAmount > 0 && (
                       <div className="flex justify-between text-sm text-red-600">
                         <span>Discount:</span>
-                        <span>-${discountAmount.toFixed(2)}</span>
+                        <span>-BR{discountAmount.toFixed(2)}</span>
                       </div>
                     )}
                     <div className="flex justify-between text-lg font-semibold gold-text border-t pt-2">
                       <span>Total:</span>
-                      <span>${totalPrice.toFixed(2)}</span>
+                      <span>BR{totalPrice.toFixed(2)}</span>
                     </div>
                   </div>
                 )}
@@ -259,13 +259,13 @@ export default function SalesPage() {
                         <TableCell>
                           {sale.discount > 0 ? (
                             <Badge variant="secondary" className="bg-red-100 text-red-800">
-                              -${sale.discount.toFixed(2)}
+                              -BR{sale.discount.toFixed(2)}
                             </Badge>
                           ) : (
                             <span className="text-gray-400">-</span>
                           )}
                         </TableCell>
-                        <TableCell className="font-semibold gold-text">${sale.totalPrice}</TableCell>
+                        <TableCell className="font-semibold gold-text">BR{sale.totalPrice}</TableCell>
                         <TableCell>
                           <Badge variant="outline" className="border-amber-200 text-amber-800">
                             {sale.paymentMethod}
@@ -291,7 +291,7 @@ export default function SalesPage() {
                           <p className="text-xs text-gray-600">{sale.date}</p>
                         </div>
                         <div className="text-right ml-2">
-                          <div className="text-lg font-bold gold-text">${sale.totalPrice}</div>
+                          <div className="text-lg font-bold gold-text">BR{sale.totalPrice}</div>
                           <Badge variant="outline" className="border-amber-200 text-amber-800 text-xs">
                             {sale.paymentMethod}
                           </Badge>
@@ -305,7 +305,7 @@ export default function SalesPage() {
                           <span className="text-xs text-gray-600">Quantity: {sale.quantity}</span>
                           {sale.discount > 0 && (
                             <Badge variant="secondary" className="bg-red-100 text-red-800 text-xs">
-                              -${sale.discount.toFixed(2)}
+                              -BR{sale.discount.toFixed(2)}
                             </Badge>
                           )}
                         </div>

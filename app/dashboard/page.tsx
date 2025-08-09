@@ -94,7 +94,7 @@ export default function Dashboard() {
               <DollarSign className="h-4 w-4 text-green-600 flex-shrink-0" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-900">${totalSalesToday}</div>
+              <div className="text-2xl font-bold text-green-900">{totalSalesToday} BR</div>
               <p className="text-xs text-green-600 flex items-center mt-1">
                 <TrendingUp className="w-3 h-3 mr-1 flex-shrink-0" />
                 <span className="mobile-text-truncate">Today's revenue</span>
