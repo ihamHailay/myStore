@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
-import { Plus, ShoppingCart, Scan, Percent, Eye, Printer } from 'lucide-react'
+import { Plus, ShoppingCart, Scan, Percent } from 'lucide-react'
 import Layout from '@/components/Layout'
 
 // Mock data
@@ -309,18 +309,6 @@ export default function SalesPage() {
                             </Badge>
                           )}
                         </div>
-                      </div>
-
-                      {/* Quick actions */}
-                      <div className="flex space-x-2 pt-2 border-t">
-                        <Button variant="outline" size="sm" className="flex-1 text-amber-600 border-amber-200 hover:bg-amber-50">
-                          <Eye className="h-4 w-4 mr-1" />
-                          View Details
-                        </Button>
-                        <Button variant="outline" size="sm" className="flex-1 text-blue-600 border-blue-200 hover:bg-blue-50">
-                          <Printer className="h-4 w-4 mr-1" />
-                          Print Receipt
-                        </Button>
                       </div>
                     </div>
                   </CardContent>
